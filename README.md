@@ -1,4 +1,4 @@
-# aurelius
+# Aurelius
 
 a from-scratch implementation of clip-style contrastive learning. trained a resnet cnn and a transformer text encoder jointly on flickr30k using symmetric infonce loss. no pretrained weights, no clip libraries — everything built using primitive pytorch.
 
