@@ -1,0 +1,31 @@
+{
+  "experiment": 5,
+  "status": "completed",
+  "failure_reason": null,
+  "runs": [
+    {
+      "temperature_init": 0.05,
+      "run_id": "experiment_5_temperature_init_0.05",
+      "status": "completed",
+      "failure_reason": "training did not produce a usable model",
+      "retrieval": null,
+      "convergence": []
+    },
+    {
+      "temperature_init": 0.07,
+      "run_id": "experiment_5_temperature_init_0.07",
+      "status": "completed",
+      "failure_reason": "training did not produce a usable model",
+      "retrieval": null,
+      "convergence": []
+    },
+    {
+      "temperature_init": 0.1,
+      "run_id": "experiment_5_temperature_init_0.1",
+      "status": "completed",
+      "failure_reason": "training did not produce a usable model",
+      "retrieval": null,
+      "convergence": []
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "experiment": 4,
+  "status": "completed",
+  "failure_reason": null,
+  "runs": [
+    {
+      "projection_head": "linear",
+      "run_id": "experiment_4_projection_head_linear",
+      "status": "completed",
+      "failure_reason": "training did not produce a usable model",
+      "retrieval": null,
+      "convergence": []
+    },
+    {
+      "projection_head": "mlp",
+      "run_id": "experiment_4_projection_head_mlp",
+      "status": "completed",
+      "failure_reason": "training did not produce a usable model",
+      "retrieval": null,
+      "convergence": []
+    }
+  ]
+}

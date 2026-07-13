@@ -1,0 +1,118 @@
+{
+  "config_snapshot": {
+    "dataset": "flickr30k",
+    "val_split_seed": 42,
+    "val_split_fraction": 0.1,
+    "train_max_samples": 8000,
+    "image_size": 224,
+    "image_mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "image_std": [
+      0.229,
+      0.224,
+      0.225
+    ],
+    "augmentation": {
+      "weak": {
+        "random_horizontal_flip": true,
+        "color_jitter": {
+          "brightness": 0.1,
+          "contrast": 0.1,
+          "saturation": 0.1,
+          "hue": 0.05
+        }
+      },
+      "strong": {
+        "random_horizontal_flip": true,
+        "color_jitter": {
+          "brightness": 0.4,
+          "contrast": 0.4,
+          "saturation": 0.4,
+          "hue": 0.1
+        },
+        "random_grayscale": 0.2,
+        "random_resized_crop": {
+          "scale": [
+            0.08,
+            1.0
+          ]
+        },
+        "gaussian_blur": {
+          "sigma": [
+            0.1,
+            2.0
+          ]
+        }
+      }
+    },
+    "image_encoder": {
+      "stem_channels": 32,
+      "stage_channels": [
+        32,
+        64,
+        128,
+        256
+      ],
+      "blocks_per_stage": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "text_encoder": {
+      "vocab_size": 50257,
+      "max_seq_len": 77,
+      "pad_id": 0,
+      "d_model": 256,
+      "num_heads": 4,
+      "num_layers": 2,
+      "ffn_multiplier": 4,
+      "norm_type": "pre"
+    },
+    "projection_head": "mlp",
+    "embed_dim": 128,
+    "temperature_init": 0.07,
+    "batch_size": 8,
+    "learning_rate": 0.0005,
+    "weight_decay": 0.1,
+    "epochs": 5,
+    "checkpoint_interval": 500,
+    "optimizer": "adamw",
+    "runtime_budget_hours": 12,
+    "memory_budget_gb": 6,
+    "experiment_seeds": {
+      "experiment_1": 0,
+      "experiment_2": 0,
+      "experiment_3": 0,
+      "experiment_4": 0,
+      "experiment_5": 0,
+      "experiment_6": 0
+    }
+  },
+  "seeds": {
+    "torch": 0,
+    "numpy": 0,
+    "random": 0
+  },
+  "git_commit": "unavailable",
+  "git_commit_unavailable_reason": "Command '['git', 'rev-parse', 'HEAD']' returned non-zero exit status 128.",
+  "git_dirty": null,
+  "git_dirty_unavailable_reason": "Command '['git', 'status', '--porcelain']' returned non-zero exit status 128.",
+  "python_version": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+  "pytorch_version": "2.10.0+cpu",
+  "timestamp": "2026-07-13T06:00:14.962815+00:00",
+  "hardware": {
+    "cpu_count": 12,
+    "total_ram_gb": 7.692127227783203,
+    "gpu_name": null,
+    "gpu_count": null
+  },
+  "resumed_from": null,
+  "resume_step": null,
+  "failure_reason": null,
+  "experiment": 6
+}

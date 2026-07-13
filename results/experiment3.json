@@ -1,0 +1,31 @@
+{
+  "experiment": 3,
+  "status": "completed",
+  "failure_reason": null,
+  "runs": [
+    {
+      "embed_dim": 128,
+      "run_id": "experiment_3_embed_dim_128",
+      "status": "completed",
+      "failure_reason": "training did not produce a usable model",
+      "retrieval": null,
+      "convergence": []
+    },
+    {
+      "embed_dim": 256,
+      "run_id": "experiment_3_embed_dim_256",
+      "status": "completed",
+      "failure_reason": "training did not produce a usable model",
+      "retrieval": null,
+      "convergence": []
+    },
+    {
+      "embed_dim": 512,
+      "run_id": "experiment_3_embed_dim_512",
+      "status": "completed",
+      "failure_reason": "training did not produce a usable model",
+      "retrieval": null,
+      "convergence": []
+    }
+  ]
+}
