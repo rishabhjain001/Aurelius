@@ -228,7 +228,7 @@ the correct answer is at rank 5 but the rank-1 result (a helicopter) has a highe
 
 ---
 
-- **tiny training set.** 8,000 images is nowhere near enough to learn a general embedding space. the original clip used 400 million pairs. retrieval numbers reflect this — absolute r@1 is below 0.2%.
+- **training data scale — a deliberate stopping point.** 8,000 images is far below what's needed for strong retrieval. after seeing the qualitative results (essentially no similarity separation between correct and incorrect matches), scaling up to 20,000–30,000 images was evaluated. the full ~30,000-image set is already on disk. the measured cost on this cpu is ~3–4 hours per training run at that scale, which puts all 11 training runs across six experiments at ~33–48 hours total. the decision was made not to pursue it — the expected marginal improvement in retrieval quality on 30k vs 8k images of flickr30k is small compared to the gap between flickr30k-scale and clip-scale (400m pairs). the bottleneck is dataset scale by several orders of magnitude, not the difference between 8k and 30k. spending 2 days of cpu time to move from "essentially random" to "slightly less random" isn't a good use of the hardware. this is a documented engineering tradeoff, not an unfinished experiment.
 - **small model.** the encoder is deliberately small to fit on cpu. a real deployment would use a much deeper cnn and a larger transformer.
 - **cpu only.** everything was trained and evaluated on cpu. a single gpu would be 10-50x faster.
 - **no pretrained initialization.** starting from random weights is the whole point of this project (demonstrate understanding from scratch), but it means we need more data to get good representations.
