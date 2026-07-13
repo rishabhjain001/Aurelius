@@ -1,0 +1,37 @@
+# Aurelius CLIP-VLM dependencies
+# Pinned to recent stable versions as of early 2025
+# Only packages from the Allowed_Library_Set are included.
+# See requirements.md §1.2, §1.6, §25.5 for the dependency policy.
+
+# Core deep learning framework
+torch==2.3.0
+
+# Dataset transforms and utilities (transforms/data loading only — no pretrained model zoo usage)
+torchvision==0.18.0
+
+# HuggingFace datasets (Flickr30K loading)
+datasets==2.19.0
+
+# GPT-2 BPE tokenizer
+tiktoken==0.7.0
+
+# Plotting
+matplotlib==3.9.0
+
+# UMAP dimensionality reduction
+umap-learn==0.5.6
+
+# System metrics (RAM, CPU)
+psutil==5.9.8
+
+# YAML config loading
+pyyaml==6.0.1
+
+# t-SNE only (no other sklearn components required)
+scikit-learn==1.5.0
+
+# Property-based testing
+hypothesis==6.103.1
+
+# Test runner
+pytest==8.2.1

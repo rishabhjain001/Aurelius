@@ -1,0 +1,69 @@
+# Dataset
+dataset: flickr30k
+val_split_seed: 42
+val_split_fraction: 0.1          # ~3100 val images from 31783 total
+
+# Training subset: cap training data to keep each run ~30 min on CPU
+train_max_samples: 8000          # use first 8000 training images per run
+
+# Image preprocessing
+image_size: 224
+image_mean: [0.485, 0.456, 0.406]
+image_std: [0.229, 0.224, 0.225]
+
+# Augmentation
+augmentation:
+  weak:
+    random_horizontal_flip: true
+    color_jitter: {brightness: 0.1, contrast: 0.1, saturation: 0.1, hue: 0.05}
+  strong:
+    random_horizontal_flip: true
+    color_jitter: {brightness: 0.4, contrast: 0.4, saturation: 0.4, hue: 0.1}
+    random_grayscale: 0.2
+    random_resized_crop: {scale: [0.08, 1.0]}
+    gaussian_blur: {sigma: [0.1, 2.0]}
+
+# Image Encoder  (CPU-feasible: 32→64→128→256 channels, 1 block/stage)
+image_encoder:
+  stem_channels: 32
+  stage_channels: [32, 64, 128, 256]
+  blocks_per_stage: [1, 1, 1, 1]
+
+# Text Encoder  (CPU-feasible: d_model=256, 2 layers, 4 heads)
+text_encoder:
+  vocab_size: 50257
+  max_seq_len: 77
+  pad_id: 0
+  d_model: 256
+  num_heads: 4
+  num_layers: 2
+  ffn_multiplier: 4
+  norm_type: pre
+
+# Projection heads
+projection_head: mlp             # "linear" | "mlp"
+embed_dim: 128                   # shared embedding dimension
+
+# InfoNCE
+temperature_init: 0.07
+
+# Training
+batch_size: 8
+learning_rate: 5.0e-4
+weight_decay: 0.1
+epochs: 5
+checkpoint_interval: 500         # steps
+optimizer: adamw
+
+# Budgets  (generous for CPU; runtime estimator will show actual projection)
+runtime_budget_hours: 12
+memory_budget_gb: 6
+
+# Experiment seeds
+experiment_seeds:
+  experiment_1: 0
+  experiment_2: 0
+  experiment_3: 0
+  experiment_4: 0
+  experiment_5: 0
+  experiment_6: 0

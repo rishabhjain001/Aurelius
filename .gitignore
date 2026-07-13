@@ -1,0 +1,31 @@
+# python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.hypothesis/
+*.egg-info/
+dist/
+build/
+
+# checkpoints (large files, not needed in repo)
+checkpoints/
+
+# logs
+logs/
+*.log
+
+# dataset cache
+~/.cache/aurelius_flickr30k/
+
+# per-step training logs (too large)
+results/*.jsonl
+
+# editor
+.vscode/
+.idea/
+
+# kiro spec internals
+.kiro/specs/*/requirements.md
+.kiro/specs/*/design.md
+.kiro/specs/*/.config.kiro
