@@ -200,13 +200,63 @@ text encoding is 3.5x faster than image encoding — the transformer here is muc
 
 ---
 
-## limitations
+## retrieval quality — honest assessment
+
+before looking at the aggregate numbers i ran a qualitative check on 50 validation images. here's what i found.
+
+**text → image (7 queries):**
+- 2 out of 7 queries had the correct image in the top 5 (ranks 4 and 5)
+- the other 5 queries returned completely unrelated images at rank 1
+- similarity scores are very poorly separated: wrong answers score 0.54–0.76, correct answers when found score 0.54–0.77. almost no gap.
+
+example — query: *"a girl in a purple shirt, covered in snow, sliding down a snowy hill"*
+```
+[1] sim=0.763  the regional park police helicopter is preparing to land.
+[2] sim=0.760  the brown furry animal is walking in snowy grass
+[3] sim=0.760  a teenage boy is doing a back flip in midair on the beach
+[4] sim=0.746  a small black dog runs through the white snow
+[5] sim=0.736  a girl in a purple shirt, covered in snow...  *** CORRECT ***
+```
+
+the correct answer is at rank 5 but the rank-1 result (a helicopter) has a higher similarity score. the model partially picks up on "snow" (rank 4 has snow) but the overall ranking is wrong.
+
+**image → caption (7 queries):**
+- 2 out of 7 queries had the correct caption in the top 5 (rank 2 in both cases)
+- the other 5 queries returned captions that have no visible semantic relationship to the image
+
+**conclusion:** the retrievals look essentially random for most queries. the aggregate median rank improvement over baseline (827 vs 1468) is real but doesn't translate to usable retrieval at this scale. this is expected — clip was trained on 400 million pairs, this model saw 40,000 gradient updates total. the embedding space is partially structured but not well-separated enough to reliably rank the correct match above all 3,000 validation images.
+
+---
 
 - **tiny training set.** 8,000 images is nowhere near enough to learn a general embedding space. the original clip used 400 million pairs. retrieval numbers reflect this — absolute r@1 is below 0.2%.
 - **small model.** the encoder is deliberately small to fit on cpu. a real deployment would use a much deeper cnn and a larger transformer.
 - **cpu only.** everything was trained and evaluated on cpu. a single gpu would be 10-50x faster.
 - **no pretrained initialization.** starting from random weights is the whole point of this project (demonstrate understanding from scratch), but it means we need more data to get good representations.
 - **flickr30k only.** the data pipeline is hardcoded to flickr30k. adding other datasets requires changes to `data.py`.
+
+---
+
+## deviations from the original spec
+
+the original brief described `experiments.py` as both the library (`ExperimentRunner`) and the cli entry point. during the build the class stayed in `experiments.py` but two convenience scripts were added:
+
+- `run_all.py` — downloads flickr30k, passes the loaded dataset to the experiment runner to avoid double-loading, then chains benchmark → visualize → readme at the end
+- `run_exp3to6.py` — skips completed experiments on restart, used when resuming after interruptions
+
+`python experiments.py` still works directly but re-runs all completed experiments rather than skipping them. the readme's "running it yourself" section points to the convenience scripts. this is a structural addition, not a removal.
+
+**other deviations:**
+
+| area | spec | built | reason |
+|---|---|---|---|
+| dataset | nlphuji/flickr30k | clip-benchmark/wds_flickr30k tar shards | nlphuji uses deprecated loading scripts that crash; wds variant is the same data |
+| dataset size | 31,783 images | ~30,000 images | the wds benchmark repo has slightly fewer; the full original flickr30k requires a deprecated script |
+| model size | d_model=512, 6 layers, embed_dim=256, stage_channels up to 512 | d_model=256, 2 layers, embed_dim=128, stage_channels up to 256 | cpu feasibility — spec-size model needs 6+ gb ram and 4+ hours per run on 12-core cpu |
+| train_max_samples | full training split (~28k images) | 8,000 — new config field | cpu feasibility — each run takes ~35–40 min at 8k samples |
+| image loading | pil images loaded via huggingface datasets | jpeg files extracted to disk, loaded lazily per batch | loading 30k pil images at once crashes on 8gb ram; lazy disk loading fixed oom errors |
+| runtime gate | interactive y/n prompt | auto-confirmed in run_all.py / run_exp3to6.py | unattended runs; interactive gate is still present when calling experiments.py directly |
+
+**everything that matched the spec exactly:** infonce loss formula and symmetry, log-temperature parameterization, residualblock and projection head architectures, mhsa from scratch, all 6 experiments and their ablation variables, checkpointmanager, retrieval metrics, zero-shot evaluator with frozen prompt_set, all 43 tests passing, results file schema, benchmark/compare/visualize/generate_readme behavior and precondition checks.
 
 ---
 
